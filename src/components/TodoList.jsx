@@ -120,6 +120,14 @@ const TodoList = ({ user }) => {
                   {user.email}
                 </p>
               </div>
+              <button
+                onClick={() =>
+                  document.documentElement.classList.toggle("dark")
+                }
+                className="px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-sm text-gray-800 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+              >
+                Toggle Mode
+              </button>
             </div>
 
             {/* User Menu - Mobile & Desktop */}
@@ -185,187 +193,194 @@ const TodoList = ({ user }) => {
       {/* Main Content */}
       <main className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
         <aside className=" space-y-6">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
-          <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100">
-            <div className="text-2xl sm:text-3xl font-bold text-gray-800">
-              {todos.length}
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
+            <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100">
+              <div className="text-2xl sm:text-3xl font-bold text-gray-800">
+                {todos.length}
+              </div>
+              <div className="text-xs sm:text-sm text-gray-500 mt-1">
+                Total Tasks
+              </div>
             </div>
-            <div className="text-xs sm:text-sm text-gray-500 mt-1">
-              Total Tasks
+            <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm">
+              <div className="text-2xl sm:text-3xl font-bold text-white">
+                {activeTodos}
+              </div>
+              <div className="text-xs sm:text-sm text-blue-100 mt-1">
+                Active
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm">
+              <div className="text-2xl sm:text-3xl font-bold text-white">
+                {completedTodos}
+              </div>
+              <div className="text-xs sm:text-sm text-green-100 mt-1">Done</div>
             </div>
           </div>
-          <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm">
-            <div className="text-2xl sm:text-3xl font-bold text-white">
-              {activeTodos}
-            </div>
-            <div className="text-xs sm:text-sm text-blue-100 mt-1">Active</div>
-          </div>
-          <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-sm">
-            <div className="text-2xl sm:text-3xl font-bold text-white">
-              {completedTodos}
-            </div>
-            <div className="text-xs sm:text-sm text-green-100 mt-1">Done</div>
-          </div>
-        </div>
 
-        {/* Add Todo Form */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6 mb-6">
-          <form onSubmit={addTodo} className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="text"
-              value={newTodo}
-              onChange={(e) => setNewTodo(e.target.value)}
-              placeholder="What needs to be done?"
-              className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-sm sm:text-base transition"
-              disabled={loading}
-            />
-            <button
-              type="submit"
-              disabled={loading || !newTodo.trim()}
-              className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:from-indigo-600 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-md text-sm sm:text-base whitespace-nowrap"
+          {/* Add Todo Form */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6 mb-6">
+            <form
+              onSubmit={addTodo}
+              className="flex flex-col sm:flex-row gap-3"
             >
-              {loading ? "..." : "+ Add"}
-            </button>
-          </form>
-        </div>
-
-        {/* Filter Tabs */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-2 mb-6">
-          <div className="flex gap-2">
-            {[
-              { id: "all", label: "All", icon: "📋" },
-              { id: "active", label: "Active", icon: "⏳" },
-              { id: "completed", label: "Done", icon: "✅" },
-            ].map((tab) => (
+              <input
+                type="text"
+                value={newTodo}
+                onChange={(e) => setNewTodo(e.target.value)}
+                placeholder="What needs to be done?"
+                className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-sm sm:text-base transition"
+                disabled={loading}
+              />
               <button
-                key={tab.id}
-                onClick={() => setFilter(tab.id)}
-                className={`flex-1 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl transition font-medium text-sm sm:text-base ${
-                  filter === tab.id
-                    ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md"
-                    : "text-gray-600 hover:bg-gray-50"
-                }`}
+                type="submit"
+                disabled={loading || !newTodo.trim()}
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:from-indigo-600 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-md text-sm sm:text-base whitespace-nowrap"
               >
-                <span className="hidden sm:inline mr-2">{tab.icon}</span>
-                {tab.label}
+                {loading ? "..." : "+ Add"}
               </button>
-            ))}
+            </form>
           </div>
-        </div>
+
+          {/* Filter Tabs */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-2 mb-6">
+            <div className="flex gap-2">
+              {[
+                { id: "all", label: "All", icon: "📋" },
+                { id: "active", label: "Active", icon: "⏳" },
+                { id: "completed", label: "Done", icon: "✅" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setFilter(tab.id)}
+                  className={`flex-1 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl transition font-medium text-sm sm:text-base ${
+                    filter === tab.id
+                      ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md"
+                      : "text-gray-600 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="hidden sm:inline mr-2">{tab.icon}</span>
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </aside>
 
         <section className="lg:col-span-2">
-        {/* Todo List */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-          {filteredTodos.length === 0 ? (
-            <div className="text-center py-16 px-4">
-              <div className="text-6xl sm:text-7xl mb-4">
-                {filter === "completed"
-                  ? "🎉"
-                  : filter === "active"
-                  ? "📝"
-                  : "📭"}
-              </div>
-              <p className="text-lg sm:text-xl font-medium text-gray-800 mb-2">
-                {filter === "completed"
-                  ? "No completed tasks yet"
-                  : filter === "active"
-                  ? "No active tasks"
-                  : "No tasks yet"}
-              </p>
-              <p className="text-sm text-gray-500">
-                {filter === "all" && "Add a new task to get started!"}
-                {filter === "active" && "All tasks are completed! 🎊"}
-                {filter === "completed" &&
-                  "Complete some tasks to see them here"}
-              </p>
-            </div>
-          ) : (
-            <div className="divide-y divide-gray-100">
-              {filteredTodos.map((todo) => (
-                <div
-                  key={todo.id}
-                  className="group p-4 sm:p-5 hover:bg-gray-50 transition flex items-start gap-3 sm:gap-4"
-                >
-                  {/* Checkbox */}
-                  <button
-                    onClick={() => toggleTodo(todo.id, todo.completed)}
-                    className="mt-0.5 flex-shrink-0"
-                  >
-                    <div
-                      className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 flex items-center justify-center transition ${
-                        todo.completed
-                          ? "bg-gradient-to-br from-green-500 to-emerald-600 border-green-500"
-                          : "border-gray-300 hover:border-indigo-500"
-                      }`}
-                    >
-                      {todo.completed && (
-                        <svg
-                          className="w-3 h-3 sm:w-4 sm:h-4 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={3}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      )}
-                    </div>
-                  </button>
-
-                  {/* Todo Text */}
-                  <div className="flex-1 min-w-0">
-                    <p
-                      className={`text-sm sm:text-base break-words ${
-                        todo.completed
-                          ? "line-through text-gray-400"
-                          : "text-gray-800"
-                      }`}
-                    >
-                      {todo.text}
-                    </p>
-                  </div>
-
-                  {/* Delete Button */}
-                  <button
-                    onClick={() => deleteTodo(todo.id)}
-                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition p-2 hover:bg-red-50 rounded-lg"
-                  >
-                    <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5 text-red-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </button>
+          {/* Todo List */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+            {filteredTodos.length === 0 ? (
+              <div className="text-center py-16 px-4">
+                <div className="text-6xl sm:text-7xl mb-4">
+                  {filter === "completed"
+                    ? "🎉"
+                    : filter === "active"
+                    ? "📝"
+                    : "📭"}
                 </div>
-              ))}
+                <p className="text-lg sm:text-xl font-medium text-gray-800 mb-2">
+                  {filter === "completed"
+                    ? "No completed tasks yet"
+                    : filter === "active"
+                    ? "No active tasks"
+                    : "No tasks yet"}
+                </p>
+                <p className="text-sm text-gray-500">
+                  {filter === "all" && "Add a new task to get started!"}
+                  {filter === "active" && "All tasks are completed! 🎊"}
+                  {filter === "completed" &&
+                    "Complete some tasks to see them here"}
+                </p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {filteredTodos.map((todo) => (
+                  <div
+                    key={todo.id}
+                    className="group p-4 sm:p-5 hover:bg-gray-50 transition flex items-start gap-3 sm:gap-4"
+                  >
+                    {/* Checkbox */}
+                    <button
+                      onClick={() => toggleTodo(todo.id, todo.completed)}
+                      className="mt-0.5 flex-shrink-0"
+                    >
+                      <div
+                        className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 flex items-center justify-center transition ${
+                          todo.completed
+                            ? "bg-gradient-to-br from-green-500 to-emerald-600 border-green-500"
+                            : "border-gray-300 hover:border-indigo-500"
+                        }`}
+                      >
+                        {todo.completed && (
+                          <svg
+                            className="w-3 h-3 sm:w-4 sm:h-4 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={3}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                    </button>
+
+                    {/* Todo Text */}
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className={`text-sm sm:text-base break-words ${
+                          todo.completed
+                            ? "line-through text-gray-400"
+                            : "text-gray-800"
+                        }`}
+                      >
+                        {todo.text}
+                      </p>
+                    </div>
+
+                    {/* Delete Button */}
+                    <button
+                      onClick={() => deleteTodo(todo.id)}
+                      className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition p-2 hover:bg-red-50 rounded-lg"
+                    >
+                      <svg
+                        className="w-4 h-4 sm:w-5 sm:h-5 text-red-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Footer Info */}
+          {todos.length > 0 && (
+            <div className="mt-6 text-center">
+              <p className="text-xs sm:text-sm text-gray-500">
+                {activeTodos > 0
+                  ? `${activeTodos} task${
+                      activeTodos === 1 ? "" : "s"
+                    } remaining`
+                  : "All tasks completed! Great job! 🎉"}
+              </p>
             </div>
           )}
-        </div>
-
-        {/* Footer Info */}
-        {todos.length > 0 && (
-          <div className="mt-6 text-center">
-            <p className="text-xs sm:text-sm text-gray-500">
-              {activeTodos > 0
-                ? `${activeTodos} task${activeTodos === 1 ? "" : "s"} remaining`
-                : "All tasks completed! Great job! 🎉"}
-            </p>
-          </div>
-        )}
         </section>
       </main>
     </div>
